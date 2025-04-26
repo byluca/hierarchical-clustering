@@ -1,34 +1,65 @@
+/**
+ * Package contenente le classi per la gestione e manipolazione dei dati nell'applicazione.
+ */
 package Server.src.data;
 
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-// modella le entità esempio inteso come vettore di valori reali
+/**
+ * Classe che modella un esempio come vettore di valori reali.
+ * Fornisce funzionalità per manipolare il vettore e calcolare distanze tra esempi.
+ * Implementa l'interfaccia Iterable per permettere di scorrere i valori contenuti.
+ */
 public class Example implements Iterable<Double> {
-    private List<Double> example; // vettore di valori reali
+    /** Vettore di valori reali che rappresenta l'esempio */
+    private List<Double> example;
 
-    // crea un'istanza di classe Example
+    /**
+     * Crea una nuova istanza di classe Example con un vettore vuoto.
+     */
     public Example() {
         example = new LinkedList<>();
     }
 
-    // restituisce un iteratore per scorrere gli elementi di example
+    /**
+     * Restituisce un iteratore per scorrere gli elementi dell'esempio.
+     *
+     * @return iteratore sui valori dell'esempio
+     */
     public Iterator<Double> iterator() {
         return example.iterator();
     }
 
-    // modifica example inserendo v in coda
+    /**
+     * Aggiunge un nuovo valore in coda all'esempio.
+     *
+     * @param v valore da aggiungere all'esempio
+     */
     public void add(Double v) {
         example.add(v);
     }
 
-    // restituisce il valore di example in posizione index
+    /**
+     * Restituisce il valore dell'esempio alla posizione specificata.
+     *
+     * @param index indice del valore da recuperare
+     * @return il valore alla posizione specificata
+     */
     Double get(int index) {
         return example.get(index);
     }
 
-    // calcola la distanza euclidea tra l'istanza this.Example e l'istanza newE.Example
+    /**
+     * Calcola la distanza euclidea tra questo esempio e quello passato come parametro.
+     * La distanza viene calcolata come somma dei quadrati delle differenze tra i valori
+     * corrispondenti nei due esempi.
+     *
+     * @param newE esempio con cui calcolare la distanza
+     * @return la distanza euclidea (somma dei quadrati delle differenze)
+     * @throws InvalidSizeException se i due esempi hanno dimensioni diverse
+     */
     public double distance(Example newE) throws InvalidSizeException {
         if(example.size() != newE.example.size()) {
             throw new InvalidSizeException("Gli esempi hanno dimensioni diverse!");
@@ -44,8 +75,12 @@ public class Example implements Iterable<Double> {
         }
         return sum;
     }
-    
-    // restituisce una stringa contenente i valori di example
+
+    /**
+     * Crea una rappresentazione testuale dell'esempio come sequenza di valori separati da virgole.
+     *
+     * @return stringa che rappresenta l'esempio
+     */
     public String toString() {
         StringBuilder s = new StringBuilder();
         Iterator<Double> iterator = iterator();

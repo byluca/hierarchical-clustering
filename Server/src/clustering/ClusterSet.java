@@ -1,29 +1,41 @@
 package Server.src.clustering;
 
 import java.io.*;
-
 import Server.src.data.Data;
 import Server.src.data.InvalidSizeException;
-
 import Server.src.distance.ClusterDistance;
 
-// implementa un insieme di cluster
+/**
+ * Rappresenta una collezione di cluster con operazioni di gestione e manipolazione.
+ * <p>
+ * La classe gestisce un insieme di cluster fornendo metodi per aggiungere, recuperare
+ * e fondere cluster. Supporta la serializzazione degli oggetti.
+ * </p>
+ */
 class ClusterSet implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
+
 	private Cluster[] C;
 	private int lastClusterIndex = 0;
 
-	// crea un'istanza di classe ClusterSet di dimensione k
-	ClusterSet(int k){
+	/**
+	 * Costruttore che inizializza un insieme di cluster con capacità specificata.
+	 * @param k Dimensione iniziale dell'insieme di cluster
+	 */
+	ClusterSet(int k) {
 		C = new Cluster[k];
 	}
 
-	// aggiunge il cluster c all'insieme di cluster e controlla che il cluster non sia già presente nell'insieme
-	// @param c cluster da aggiungere all'insieme
+	/**
+	 * Aggiunge un cluster all'insieme se non già presente.
+	 * <p>
+	 * Verifica la presenza tramite confronto di riferimento (identity check)
+	 * </p>
+	 * @param c Cluster da aggiungere all'insieme
+	 */
 	void add(Cluster c) {
 		for (int j = 0; j < lastClusterIndex; j++) {
-			if (c == C[j]) {// to avoid duplicates
+			if (c == C[j]) {
 				return;
 			}
 		}
@@ -31,16 +43,30 @@ class ClusterSet implements Serializable {
 		lastClusterIndex++;
 	}
 
-	// restituisce il cluster in posizione i
+	/**
+	 * Restituisce il cluster nella posizione specificata.
+	 * @param i Indice del cluster da recuperare
+	 * @return Cluster nella posizione i-esima
+	 */
 	Cluster get(int i) {
 		return C[i];
 	}
 
-	// restituisce un nuovo insieme di cluster che è la fusione dei due cluster più vicini
-	// @param distance interfaccia di calcolo della distanza tra due cluster
-	// @param data dataset
-	// @return insieme di cluster con i due cluster più vicini fusi
-	ClusterSet mergeClosestClusters(ClusterDistance distance, Data data) throws InvalidSizeException, InvalidClustersNumberException {
+	/**
+	 * Fonde i due cluster più vicini in un nuovo insieme.
+	 * <p>
+	 * Calcola le distanze tra tutte le coppie di cluster utilizzando la metrica specificata.
+	 * Crea un nuovo ClusterSet sostituendo i due cluster più vicini con la loro fusione.
+	 * </p>
+	 * @param distance Strategia per il calcolo della distanza tra cluster
+	 * @param data Dataset di riferimento per il calcolo delle distanze
+	 * @return Nuovo ClusterSet con i cluster fusi
+	 * @throws InvalidSizeException Se si verifica un errore nelle dimensioni dei dati
+	 * @throws InvalidClustersNumberException Se sono presenti meno di due cluster
+	 */
+	ClusterSet mergeClosestClusters(ClusterDistance distance, Data data)
+			throws InvalidSizeException, InvalidClustersNumberException {
+
 		if (lastClusterIndex <= 1) {
 			throw new InvalidClustersNumberException("Non ci sono abbastanza cluster da fondere");
 		}
@@ -84,8 +110,11 @@ class ClusterSet implements Serializable {
 		return finalClusterSet;
 	}
 
-	// restituisce una stringa contenente gli indici degli esempi raggruppati nei cluster
-	public String toString(){
+	/**
+	 * Restituisce una rappresentazione testuale degli indici degli esempi nei cluster.
+	 * @return Stringa formattata con la struttura dei cluster
+	 */
+	public String toString() {
 		String str = "";
 		for (int i = 0; i < C.length; i++) {
 			if (C[i] != null) {
@@ -95,8 +124,12 @@ class ClusterSet implements Serializable {
 		return str;
 	}
 
-	// restituisce una stringa contenente gli esempi raggruppati nei cluster
-	public String toString(Data data){
+	/**
+	 * Restituisce una rappresentazione dettagliata degli esempi nei cluster.
+	 * @param data Dataset per recuperare i valori degli esempi
+	 * @return Stringa formattata con i dati effettivi dei cluster
+	 */
+	public String toString(Data data) {
 		String str = "";
 		for (int i = 0; i < C.length; i++) {
 			if (C[i] != null) {

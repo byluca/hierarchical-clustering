@@ -1,3 +1,6 @@
+/**
+ * Package contenente le classi per la gestione e manipolazione dei dati nell'applicazione.
+ */
 package Server.src.data;
 
 import java.util.ArrayList;
@@ -8,13 +11,21 @@ import java.sql.SQLException;
 
 import Server.src.database.*;
 
-// avvalora un oggetto data predefinito (fornito dal docente)
-// oppure leggendo i suoi esempi dalla tabella con nome tableName nel database
-// @throws NoDataException se la tabella è vuota
+/**
+ * Classe che rappresenta un dataset composto da esempi.
+ * Fornisce funzionalità per caricare dati da database, accedere agli esempi
+ * e calcolare distanze tra di essi.
+ */
 public class Data {
-    private List<Example> data = new ArrayList<>(); // rappresenta il dataset
+    /** Lista che memorizza gli esempi che compongono il dataset */
+    private List<Example> data = new ArrayList<>();
 
-    // crea un'istanza di classe Data leggendo i suoi esempi dalla tabella con nome tableName nel database
+    /**
+     * Crea un'istanza di classe Data leggendo i suoi esempi dalla tabella specificata nel database.
+     *
+     * @param tableName nome della tabella da cui leggere i dati
+     * @throws NoDataException se la tabella è vuota o se si verificano errori durante l'accesso ai dati
+     */
     public Data(String tableName) throws NoDataException {
         DbAccess dbAccess = new DbAccess();
 
@@ -33,25 +44,44 @@ public class Data {
         }
     }
 
-    // restituisce il numero degli esempi memorizzati in data
+    /**
+     * Restituisce il numero degli esempi memorizzati nel dataset.
+     *
+     * @return numero di esempi nel dataset
+     */
     public int getNumberOfExample() {
         return data.size();
     }
 
-    // restituisce l'elemento dell'istanza data in posizione exampleIndex
+    /**
+     * Restituisce l'esempio in posizione specificata.
+     *
+     * @param exampleIndex indice dell'esempio da recuperare
+     * @return l'esempio alla posizione specificata
+     */
     public Example getExample(int exampleIndex) {
         return data.get(exampleIndex);
     }
 
-    // restituisce un iteratore per scorrere gli elementi di data
+    /**
+     * Restituisce un iteratore per scorrere gli esempi del dataset.
+     *
+     * @return iteratore sugli esempi
+     */
     public Iterator<Example> iterator() {
         return data.iterator();
     }
 
-    // restituisce la matrice triangolare superiore delle distanze Euclidee calcolate tra gli esempi memorizzati in data
+    /**
+     * Calcola e restituisce la matrice triangolare superiore delle distanze Euclidee
+     * tra gli esempi memorizzati nel dataset.
+     *
+     * @return matrice delle distanze tra esempi
+     * @throws InvalidSizeException se si verificano problemi con le dimensioni durante il calcolo
+     */
     public double[][] distance() throws InvalidSizeException {
         double[][] dist = new double[data.size()][data.size()];
-        
+
         for (int i = 0; i < data.size(); i++) {
             dist[i][i] = 0;
             for (int j = i + 1; j < data.size(); j++) {
@@ -63,7 +93,11 @@ public class Data {
         return dist;
     }
 
-    // crea una stringa in cui memorizza gli esempi memorizzati nell’attributo data, opportunamente enumerati
+    /**
+     * Crea una rappresentazione testuale del dataset con tutti gli esempi enumerati.
+     *
+     * @return stringa che rappresenta il dataset
+     */
     public String toString() {
         StringBuilder s = new StringBuilder();
         Iterator<Example> iterator = iterator();

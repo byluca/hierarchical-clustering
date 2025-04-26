@@ -8,7 +8,8 @@ import java.net.*;
 
 /**
  * ClientGUI è la classe che implementa l'interfaccia grafica per il client.
- * Mantiene le stesse funzionalità del MainTest ma con un'interfaccia grafica.
+ * Fornisce un'interfaccia utente per connettersi al server, caricare dati,
+ * eseguire l'apprendimento e salvare il dendrogramma.
  */
 public class ClientGUI extends JFrame {
     // Componenti dell'interfaccia grafica
@@ -34,7 +35,8 @@ public class ClientGUI extends JFrame {
     private String dendrogramToSave = null;
 
     /**
-     * Costruttore della classe ClientGUI
+     * Costruttore della classe ClientGUI.
+     * Inizializza i componenti, organizza il layout e aggiunge i listener.
      */
     public ClientGUI() {
         super("Cliente Dendrogramma");
@@ -47,7 +49,7 @@ public class ClientGUI extends JFrame {
     }
 
     /**
-     * Inizializza i componenti dell'interfaccia grafica
+     * Inizializza i componenti dell'interfaccia grafica.
      */
     private void initComponents() {
         serverIPField = new JTextField("localhost", 15);
@@ -73,7 +75,7 @@ public class ClientGUI extends JFrame {
     }
 
     /**
-     * Organizza i componenti nell'interfaccia grafica
+     * Organizza i componenti nell'interfaccia grafica.
      */
     private void layoutComponents() {
         setLayout(new BorderLayout());
@@ -135,7 +137,7 @@ public class ClientGUI extends JFrame {
     }
 
     /**
-     * Aggiunge i listener agli eventi dei componenti
+     * Aggiunge i listener agli eventi dei componenti.
      */
     private void addListeners() {
         connectButton.addActionListener(e -> connectToServer());
@@ -154,7 +156,8 @@ public class ClientGUI extends JFrame {
     }
 
     /**
-     * Connette il client al server
+     * Connette il client al server.
+     * Se già connesso, chiude la connessione.
      */
     private void connectToServer() {
         if (isConnected) {
@@ -190,7 +193,7 @@ public class ClientGUI extends JFrame {
     }
 
     /**
-     * Chiude la connessione con il server
+     * Chiude la connessione con il server.
      */
     private void closeConnection() {
         try {
@@ -203,7 +206,8 @@ public class ClientGUI extends JFrame {
     }
 
     /**
-     * Carica i dati dal database sul server
+     * Carica i dati dal database sul server.
+     * Invia il nome della tabella al server e attende la conferma.
      */
     private void loadDataOnServer() {
         if (!isConnected) {
@@ -236,7 +240,8 @@ public class ClientGUI extends JFrame {
     }
 
     /**
-     * Carica il dendrogramma da file sul server
+     * Carica il dendrogramma da file sul server.
+     * Invia il nome del file al server e visualizza il dendrogramma in output se il caricamento va a buon fine.
      */
     private void loadDendrogramFromFileOnServer() {
         if (!isConnected || !isDataLoaded) {
@@ -268,7 +273,9 @@ public class ClientGUI extends JFrame {
     }
 
     /**
-     * Apprende il dendrogramma sul server
+     * Apprende il dendrogramma sul server.
+     * Invia i parametri di profondità e tipo di distanza, e se l'operazione ha successo,
+     * richiede all'utente il nome per salvare il dendrogramma.
      */
     private void mineDendrogramOnServer() {
         if (!isConnected || !isDataLoaded) {
@@ -322,7 +329,8 @@ public class ClientGUI extends JFrame {
     }
 
     /**
-     * Salva il dendrogramma su un file locale
+     * Salva il dendrogramma su un file locale.
+     * Apre una finestra di dialogo per selezionare il percorso di salvataggio.
      */
     private void saveToFile() {
         if (dendrogramToSave == null) {
@@ -346,7 +354,7 @@ public class ClientGUI extends JFrame {
     }
 
     /**
-     * Metodo main per avviare l'applicazione
+     * Metodo main per avviare l'applicazione ClientGUI.
      * @param args argomenti da linea di comando (non utilizzati)
      */
     public static void main(String[] args) {
